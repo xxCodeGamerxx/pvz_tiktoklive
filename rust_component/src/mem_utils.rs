@@ -7,7 +7,7 @@ pub fn safe_close_handle(handle: HANDLE) {
         if let Err(e) = CloseHandle(handle) {
             eprintln!("Failed to close handle: {:?}", e);
         }
-        println!("{:?} closed", handle);
+        // println!("{:?} closed", handle);
     }
 }
 
