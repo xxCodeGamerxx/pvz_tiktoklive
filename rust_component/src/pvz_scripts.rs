@@ -31,11 +31,6 @@ pub fn change_sun_value(process_id: u32, change_value_amount: i32) {
         Ok(_) => return,
         Err(e) => print_error("Get the game state", &e),
     }
-    match is_game_paused(process_id) {
-        Ok(0) => println!("Game is not paused"),
-        Ok(_) => return,
-        Err(e) => print_error("Get game paused", &e),
-    }
     match current_sun_value(process_id) {
         Ok(value) => {
             let new_value = (value as i32 + change_value_amount).max(0) as u32;

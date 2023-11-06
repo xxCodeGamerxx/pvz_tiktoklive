@@ -17,26 +17,30 @@ pub async fn handle_request(req: Request<Body>, tx: UnboundedSender<SunChangeTas
     let body_bytes = hyper::body::to_bytes(req.into_body()).await.unwrap();
     let body_str = String::from_utf8(body_bytes.to_vec()).unwrap();
 
-    let webhook_id = path.split('/').last().unwrap_or("");
+    let parts = path.split('/').collect::<Vec<&str>>();
+    let webhook_id = parts.get(parts.len() - 2).unwrap_or(&""); // The webhook id is now second last
+    let count: i32 = parts.last().unwrap_or(&"0").parse().unwrap_or(0);
 
     println!("Received Webhook {} Payload: {}", webhook_id, body_str);
 
-    match webhook_id {
+    match *webhook_id {
         "like" => {
-            tx.send(SunChangeTask { process_id, change_value_amount: -1 }).unwrap();
-            println!("User has liked the livestream");
+            let change_value = -(count / 3);
+            tx.send(SunChangeTask { process_id, change_value_amount: change_value }).unwrap();
+            println!("User has liked the livestream, count: {}", count);
         },
         "follow" => {
             tx.send(SunChangeTask { process_id, change_value_amount: -25 }).unwrap();
             println!("User has followed the livestream");
         },
         "share" => {
-            tx.send(SunChangeTask { process_id, change_value_amount: -15 }).unwrap();
+            tx.send(SunChangeTask { process_id, change_value_amount: -10 }).unwrap();
             println!("User has shared the livestream");
         },
         "gift" => {
-            tx.send(SunChangeTask { process_id, change_value_amount: -1 }).unwrap();
-            println!("User has gifted to the livestream");
+            let change_value = -(count * 5);
+            tx.send(SunChangeTask { process_id, change_value_amount: change_value }).unwrap();
+            println!("User has gifted to the stream, count: {}", count);
         },
         "reset" => {
             tx.send(SunChangeTask { process_id, change_value_amount: -9990 }).unwrap();
