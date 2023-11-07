@@ -4,7 +4,10 @@ const BASE_URL = "http://127.0.0.1:3000";
 
 async function sendRequest(endpoint, likeCount) {
   try {
-    const url = likeCount !== undefined ? `${BASE_URL}/${endpoint}/${likeCount}` : `${BASE_URL}/${endpoint}`;
+    const url =
+      likeCount !== undefined
+        ? `${BASE_URL}/${endpoint}/${likeCount}`
+        : `${BASE_URL}/${endpoint}`;
     const response = await axios.post(url, {
       data: "sample payload",
     });
@@ -36,7 +39,7 @@ const { WebcastPushConnection } = require("tiktok-live-connector");
 const WebSocket = require("ws");
 
 // Username of someone who is currently live
-let tiktokUsername = "gr1zztv";
+let tiktokUsername = "crocvip";
 
 let ws = new WebSocket("ws://127.0.0.1:4430/vtplus");
 
@@ -141,7 +144,7 @@ tiktokLiveConnection.on("like", (data) => {
 tiktokLiveConnection.on("share", (data) => {
   console.log(data.nickname, "shared the stream!");
   addShareTime();
-  sendRequest("share", 1);
+  sendRequest("share", 0);
 });
 
 tiktokLiveConnection.on("follow", (data) => {
@@ -163,15 +166,15 @@ tiktokLiveConnection.on("gift", (data) => {
   sendRequest("gift", data.repeatCount);
 });
 
-tiktokLiveConnection.on('disconnected', () => {
-  console.log('disconnected :(');
-})
+tiktokLiveConnection.on("disconnected", () => {
+  console.log("disconnected :(");
+});
 
-tiktokLiveConnection.on('streamEnd', (actionId) => {
+tiktokLiveConnection.on("streamEnd", (actionId) => {
   if (actionId === 3) {
-    console.log('Stream ended by user!');
+    console.log("Stream ended by user!");
   }
   if (actionId === 4) {
-    console.log('User was banned!');
+    console.log("User was banned!");
   }
-})
+});
