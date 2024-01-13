@@ -2,6 +2,8 @@
 
 A small modding project for setting up Plants Vs Zombies to react to TikTok Live's gifting/like/follower events. I was trying to get spawning zombies to work, but the only thing I ended up getting to work before giving up was change the sun count. 
 
+THIS PROJECT ONLY WORKS WITH PVZ VERSION 1.0.0.1052
+
 ## How to set up
 
 Clone this project, then:
